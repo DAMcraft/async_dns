@@ -107,8 +107,9 @@ async def request(req: DNSMessage, addr: Address, timeout: float = 3.0):
     '''
     Send raw data through UDP.
     '''
-    dispatcher = Dispatcher.get(addr.ip_type)
+    dispatcher = Dispatcher(addr.ip_type)
     data = await dispatcher.send(req, addr, timeout)
+    dispatcher.destroy()
     result = DNSMessage.parse(data)
     return result
 
